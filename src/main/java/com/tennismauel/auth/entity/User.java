@@ -1,5 +1,6 @@
 package com.tennismauel.auth.entity;
 
+import com.tennismauel.auth.config.security.dto.OAuthAttributes;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,8 +53,26 @@ public class User {
     @Column(length=20, nullable = false)
     private Role role;
 
-    public User update(String profile) {
-        this.profile = profile;
+    public User update(OAuthAttributes oAuthAttributes) {
+        if(this.nick==null||!this.nick.equals(oAuthAttributes.getNick())){
+            this.nick=oAuthAttributes.getNick();
+        }
+
+        if(this.profile==null||!this.profile.equals(oAuthAttributes.getProfile())){
+            this.profile= oAuthAttributes.getProfile();
+        }
+
+        if(this.gender==null||!this.gender.equals(oAuthAttributes.getGender())){
+            this.gender=oAuthAttributes.getGender();
+        }
+
+        if(this.age==null||!this.age.equals(oAuthAttributes.getAge())){
+            this.age=oAuthAttributes.getAge();
+        }
+
+        if(this.phone==null||!this.phone.equals(oAuthAttributes.getPhone())){
+            this.phone=oAuthAttributes.getPhone();
+        }
 
         return this;
     }

@@ -26,6 +26,10 @@ public class OAuthAttributes {
     private String phone;
     private String provider;
 
+    public void setNickNull(){
+        this.nick=null;
+    }
+
     public static OAuthAttributes of(OAuth2UserRequest request,  Map<String, Object> attributes) {
         String registrationId=request.getClientRegistration().getRegistrationId();
         String userNameAttributeName=request.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
