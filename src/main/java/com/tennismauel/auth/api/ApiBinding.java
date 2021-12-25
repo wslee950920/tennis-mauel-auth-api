@@ -11,8 +11,11 @@ import java.io.IOException;
 public abstract class ApiBinding {
     protected RestTemplate restTemplate;
 
-    public ApiBinding(String accessToken) {
+    public ApiBinding() {
         this.restTemplate = new RestTemplate();
+    }
+
+    public void setAccessToken(String accessToken){
         if (accessToken != null) {
             this.restTemplate.getInterceptors().add(getBearerTokenInterceptor(accessToken));
         } else {
@@ -34,8 +37,8 @@ public abstract class ApiBinding {
     private ClientHttpRequestInterceptor getNoTokenInterceptor() {
         return new ClientHttpRequestInterceptor() {
             @Override
-            public ClientHttpResponse intercept(HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution) throws IOException {
-                throw new IllegalStateException("Can't access the Google API without an access token");
+            public ClientHttpResponse intercept(HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution) {
+                throw new IllegalStateException("Can't access APIs without an access token");
             }
         };
     }

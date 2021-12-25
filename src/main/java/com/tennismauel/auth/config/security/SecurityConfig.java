@@ -1,5 +1,6 @@
 package com.tennismauel.auth.config.security;
 
+import com.tennismauel.auth.config.security.handler.OAuth2AuthenticationFailureHandler;
 import com.tennismauel.auth.config.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.tennismauel.auth.config.security.service.CustomOAuth2UserService;
 import com.tennismauel.auth.config.security.service.HttpCookieOAuth2AuthorizationRequestRepository;
@@ -15,6 +16,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
     public static final String AUTHORITIES_CLAIM_NAME = "roles";
 
@@ -32,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .userInfoEndpoint().userService(customOAuth2UserService)
                 .and()
-                .successHandler(oAuth2AuthenticationSuccessHandler);
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
     }
 }

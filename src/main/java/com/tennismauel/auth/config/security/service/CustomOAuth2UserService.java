@@ -24,13 +24,14 @@ import java.util.Collections;
 public class CustomOAuth2UserService implements OAuth2UserService {
     private final UserRepository userRepository;
     private final OAuth2ToUserMapper oAuth2ToUserMapper;
+    private final OAuth2AttributeService oAuth2AttributeService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest request) throws OAuth2AuthenticationException{
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate=new DefaultOAuth2UserService();
         OAuth2User oAuth2User=delegate.loadUser(request);
 
-        OAuthAttributes attributes= OAuthAttributes.of(request, oAuth2User.getAttributes());
+        OAuthAttributes attributes= oAuth2AttributeService.getOAuthAttributes(request, oAuth2User.getAttributes());
         User user=saveOrUpdate(attributes);
 
         return new DefaultOAuth2User(
