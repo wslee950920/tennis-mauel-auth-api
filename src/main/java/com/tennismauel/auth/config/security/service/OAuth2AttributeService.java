@@ -16,7 +16,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class OAuth2AttributeService {
-    private final ObjectMapper objectMapper;
     private final Google google;
 
     public OAuthAttributes getOAuthAttributes(OAuth2UserRequest request, Map<String, Object> attributes) {
@@ -31,21 +30,15 @@ public class OAuth2AttributeService {
 
         String accessToken=request.getAccessToken().getTokenValue();
         log.debug("access token : "+accessToken);
-        return ofGoogle(accessToken, registrationId, userNameAttributeName, attributes);
+        google.setAccessToken(accessToken);
+
+        return ofGoogle(registrationId, userNameAttributeName, attributes);
     }
 
-    private OAuthAttributes ofGoogle(String accessToken, String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
+    private OAuthAttributes ofGoogle(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         log.debug(attributes.toString());
 
-        google.setAccessToken(accessToken);
-        Person person = null;
-
-        try {
-            person = objectMapper.readValue(google.getPerson(), Person.class);
-            log.debug(String.format("%c, %d, %s, %s", person.getGender(), person.getAge(), person.getNick(), person.getPhone()));
-        } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
-        }
+        Person person = google.getPerson();
 
         return OAuthAttributes.builder()
                 .email((String) attributes.get("email"))

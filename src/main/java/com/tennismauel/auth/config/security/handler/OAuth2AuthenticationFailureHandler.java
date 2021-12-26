@@ -1,5 +1,7 @@
 package com.tennismauel.auth.config.security.handler;
 
+import com.tennismauel.auth.config.security.exception.BadRequestException;
+import com.tennismauel.auth.config.security.exception.EmailAlreadyExistException;
 import com.tennismauel.auth.config.security.service.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.tennismauel.auth.util.CookieUtils;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +10,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,8 +29,16 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
                 .map(Cookie::getValue)
                 .orElse(("/"));
 
+        int code= HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        if(exception instanceof BadRequestException){
+            code=HttpServletResponse.SC_BAD_REQUEST;
+        } else if(exception instanceof EmailAlreadyExistException){
+            code=HttpServletResponse.SC_CONFLICT;
+        }
+
         targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("error", exception.getLocalizedMessage())
+                .queryParam("code", code)
+                .queryParam("message", exception.getLocalizedMessage())
                 .build().toUriString();
 
         httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);

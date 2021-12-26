@@ -1,5 +1,6 @@
 package com.tennismauel.auth.api;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -8,12 +9,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public abstract class ApiBinding {
-    protected RestTemplate restTemplate;
-
-    public ApiBinding() {
-        this.restTemplate = new RestTemplate();
-    }
+    protected final RestTemplate restTemplate;
 
     public void setAccessToken(String accessToken){
         if (accessToken != null) {
