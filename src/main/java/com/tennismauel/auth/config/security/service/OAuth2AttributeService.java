@@ -1,7 +1,5 @@
 package com.tennismauel.auth.config.security.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tennismauel.auth.api.Google.Google;
 import com.tennismauel.auth.api.Google.Person;
 import com.tennismauel.auth.config.security.dto.OAuthAttributes;

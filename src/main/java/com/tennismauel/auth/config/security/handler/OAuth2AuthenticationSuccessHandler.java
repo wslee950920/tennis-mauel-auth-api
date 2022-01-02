@@ -1,6 +1,6 @@
 package com.tennismauel.auth.config.security.handler;
 
-import com.tennismauel.auth.config.security.AppProperties;
+import com.tennismauel.auth.config.AppProperties;
 import com.tennismauel.auth.config.security.JwtHelper;
 import com.tennismauel.auth.config.security.SecurityConfig;
 import com.tennismauel.auth.config.security.exception.BadRequestException;
@@ -50,7 +50,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         log.debug(authentication.toString());
         DefaultOAuth2User oAuth2User=(DefaultOAuth2User) authentication.getPrincipal();
         log.debug(oAuth2User.toString());
-        String username=oAuth2User.getName();
+        String username=oAuth2User.getAttribute("email");
         log.debug(username);
 
         Map<String, String> claims = new HashMap<>();
@@ -61,10 +61,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .collect(Collectors.joining(" "));
         claims.put(SecurityConfig.AUTHORITIES_CLAIM_NAME, authorities);
 
-        String jwt = jwtHelper.createJwtForClaims(username, claims, Calendar.MINUTE, 30);
+        String jwt = jwtHelper.createJwtForClaims("tennis_mauel", claims, Calendar.MINUTE, 30);
         CookieUtils.addCookie(response, "access_token", jwt, 60*30);
 
         clearAuthenticationAttributes(request, response);
+
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 

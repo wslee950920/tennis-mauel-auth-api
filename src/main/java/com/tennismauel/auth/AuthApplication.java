@@ -1,7 +1,7 @@
 package com.tennismauel.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tennismauel.auth.config.security.AppProperties;
+import com.tennismauel.auth.config.AppProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
