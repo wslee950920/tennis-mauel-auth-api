@@ -1,4 +1,4 @@
-package com.tennismauel.auth.config.security;
+package com.tennismauel.auth.config.security.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;

@@ -47,6 +47,8 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
 	implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 test {

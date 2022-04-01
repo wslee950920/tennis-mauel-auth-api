@@ -1,7 +1,7 @@
 package com.tennismauel.auth.config.security.handler;
 
 import com.tennismauel.auth.config.AppProperties;
-import com.tennismauel.auth.config.security.JwtHelper;
+import com.tennismauel.auth.config.security.util.JwtHelper;
 import com.tennismauel.auth.config.security.SecurityConfig;
 import com.tennismauel.auth.config.security.exception.BadRequestException;
 import com.tennismauel.auth.config.security.service.HttpCookieOAuth2AuthorizationRequestRepository;
@@ -20,10 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.tennismauel.auth.config.security.service.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
@@ -61,8 +58,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .collect(Collectors.joining(" "));
         claims.put(SecurityConfig.AUTHORITIES_CLAIM_NAME, authorities);
 
-        String jwt = jwtHelper.createJwtForClaims("tennis_mauel", claims, Calendar.MINUTE, 30);
-        CookieUtils.addCookie(response, "access_token", jwt, 60*30);
+        String accessToken = jwtHelper.createJwtForClaims("access_token", claims, Calendar.MINUTE, 30);
+        CookieUtils.addCookie(response, "access_token", accessToken, 60*30);
 
         clearAuthenticationAttributes(request, response);
 

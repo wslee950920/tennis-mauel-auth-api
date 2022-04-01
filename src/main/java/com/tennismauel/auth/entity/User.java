@@ -2,14 +2,12 @@ package com.tennismauel.auth.entity;
 
 import com.tennismauel.auth.config.security.dto.OAuthAttributes;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -53,6 +51,10 @@ public class User {
     @Column(length=20, nullable = false)
     private Role role;
 
+    public static UserBuilder builder() {
+        return new UserBuilder();
+    }
+
     public User update(OAuthAttributes oAuthAttributes) {
         if(this.nick==null||!this.nick.equals(oAuthAttributes.getNick())){
             this.nick=oAuthAttributes.getNick();
@@ -79,5 +81,73 @@ public class User {
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public static class UserBuilder {
+        private Long id;
+        private String email;
+        private String nick;
+        private String profile;
+        private Character gender;
+        private Integer age;
+        private String phone;
+        private String provider;
+        private Role role;
+
+        UserBuilder() {
+        }
+
+        public UserBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public UserBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserBuilder nick(String nick) {
+            this.nick = nick;
+            return this;
+        }
+
+        public UserBuilder profile(String profile) {
+            this.profile = profile;
+            return this;
+        }
+
+        public UserBuilder gender(Character gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public UserBuilder age(Integer age) {
+            this.age = age;
+            return this;
+        }
+
+        public UserBuilder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public UserBuilder provider(String provider) {
+            this.provider = provider;
+            return this;
+        }
+
+        public UserBuilder role(Role role) {
+            this.role = role;
+            return this;
+        }
+
+        public User build() {
+            return new User(id, email, nick, profile, gender, age, phone, provider, role);
+        }
+
+        public String toString() {
+            return "User.UserBuilder(id=" + this.id + ", email=" + this.email + ", nick=" + this.nick + ", profile=" + this.profile + ", gender=" + this.gender + ", age=" + this.age + ", phone=" + this.phone + ", provider=" + this.provider + ", role=" + this.role + ")";
+        }
     }
 }
